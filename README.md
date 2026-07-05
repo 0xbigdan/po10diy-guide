@@ -32,9 +32,7 @@
 
 **off:** slide it up. the machine has no state memory — your sequence lives only while the power is on.
 
-**charging:** plug a usb-c cable into the feather board on the back. the onboard charger tops up the 400 mah lipo battery. you can keep playing while it charges.
-
-> **note:** the sharp memory display and rp2040 sip power politely — expect hours of video art per charge, less if the dvi port is driving a projector.
+**charging:** plug a usb-c cable into the feather board on the back.
 
 ## 03 · quick start — 60 seconds
 
