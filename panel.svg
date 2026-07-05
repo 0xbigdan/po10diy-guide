@@ -1,0 +1,149 @@
+<svg viewBox="0 0 420 620" width="420" xmlns="http://www.w3.org/2000/svg" font-family="'SF Mono', ui-monospace, 'Roboto Mono', monospace" role="img" aria-label="front panel diagram of the pocket video synthesizer">
+  <rect x="0" y="0" width="420" height="620" fill="#0f0f0f"/>
+        <!-- device body -->
+        <rect x="40" y="30" width="320" height="560" rx="10" fill="#161616" stroke="#e8e8e8" stroke-width="1.5"/>
+        <!-- mounting holes -->
+        <circle cx="56" cy="46" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+        <circle cx="344" cy="46" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+        <circle cx="56" cy="574" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+        <circle cx="344" cy="574" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+
+        <!-- screen -->
+        <rect x="65" y="62" width="270" height="162" fill="#000"/>
+        <rect x="68" y="65" width="264" height="156" fill="#fff"/>
+        <!-- ui strips -->
+        <rect x="68" y="65" width="26" height="156" fill="#eaeaea"/>
+        <rect x="306" y="65" width="26" height="156" fill="#eaeaea"/>
+        <!-- left strip: layer icons -->
+        <g fill="none" stroke="#111" stroke-width="1">
+          <rect x="73" y="72" width="16" height="10"/>
+          <rect x="73" y="86" width="16" height="10"/>
+          <rect x="73" y="100" width="16" height="10"/>
+          <rect x="73" y="114" width="16" height="10"/>
+          <rect x="73" y="150" width="10" height="10"/>
+          <rect x="73" y="170" width="16" height="12"/>
+          <rect x="73" y="188" width="16" height="12"/>
+        </g>
+        <!-- right strip: knob bars -->
+        <rect x="310" y="120" width="8" height="96" fill="#111"/>
+        <rect x="321" y="160" width="8" height="56" fill="#111"/>
+        <!-- canvas doodle -->
+        <g fill="none" stroke="#111" stroke-width="1">
+          <circle cx="200" cy="143" r="38"/>
+          <circle cx="200" cy="143" r="24"/>
+          <path d="M120 200 L280 86"/>
+          <path d="M132 86 L268 200"/>
+          <rect x="176" y="119" width="48" height="48"/>
+        </g>
+
+        <!-- power switch: hidden under the display's lower-left corner -->
+        <rect x="64" y="246" width="30" height="12" rx="3" fill="none" stroke="#e8e8e8" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <text x="100" y="256" font-size="9" fill="#9b9b9b">on/off (under display)</text>
+
+        <!-- keypad row 0: layers / folder / tempo keys + knobs a/b -->
+        <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+          <rect x="64"  y="284" width="44" height="44" rx="7"/>
+          <rect x="124" y="284" width="44" height="44" rx="7"/>
+          <rect x="184" y="284" width="44" height="44" rx="7"/>
+        </g>
+        <!-- layers icon -->
+        <g fill="none" stroke="#e8e8e8" stroke-width="1.5">
+          <path d="M86 298 L98 305 L86 312 L74 305 Z"/>
+          <path d="M74 310 L86 317 L98 310"/>
+        </g>
+        <!-- folder icon -->
+        <path d="M134 300 h9 l3 3 h12 v11 h-24 Z" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+        <!-- lock icon -->
+        <rect x="199" y="304" width="14" height="10" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+        <path d="M202 304 v-3 a4 4 0 0 1 8 0 v3" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+        <!-- knobs -->
+        <circle cx="266" cy="306" r="24" fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5"/>
+        <line x1="266" y1="306" x2="266" y2="285" stroke="#e8e8e8" stroke-width="1.5"/>
+        <text x="266" y="341" font-size="9" text-anchor="middle" fill="#e8e8e8">A</text>
+        <circle cx="326" cy="306" r="24" fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5"/>
+        <line x1="326" y1="306" x2="342" y2="292" stroke="#e8e8e8" stroke-width="1.5"/>
+        <text x="326" y="341" font-size="9" text-anchor="middle" fill="#e8e8e8">B</text>
+
+        <!-- button grid: 3 rows x 5 cols -->
+        <!-- row 1: ! !! !!! color fx -->
+        <g>
+          <!-- x positions: 62, 122, 182, 242, 302 centers -->
+          <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+            <rect x="64"  y="344" width="44" height="44" rx="7"/>
+            <rect x="124" y="344" width="44" height="44" rx="7"/>
+            <rect x="184" y="344" width="44" height="44" rx="7"/>
+            <rect x="244" y="344" width="44" height="44" rx="7"/>
+            <rect x="304" y="344" width="44" height="44" rx="7"/>
+          </g>
+          <text x="86"  y="371" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">!</text>
+          <text x="146" y="371" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">!!</text>
+          <text x="206" y="371" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">!!!</text>
+          <!-- color swatch icon: diagonally half-filled square -->
+          <rect x="255" y="355" width="22" height="22" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+          <path d="M255 377 L277 377 L277 355 Z" fill="#e8e8e8"/>
+          <text x="326" y="371" font-size="11" font-weight="bold" text-anchor="middle" fill="#ff4a00">FX</text>
+        </g>
+
+        <!-- row 2: 1 2 3 4 play -->
+        <g>
+          <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+            <rect x="64"  y="404" width="44" height="44" rx="7"/>
+            <rect x="124" y="404" width="44" height="44" rx="7"/>
+            <rect x="184" y="404" width="44" height="44" rx="7"/>
+            <rect x="244" y="404" width="44" height="44" rx="7"/>
+            <rect x="304" y="404" width="44" height="44" rx="7"/>
+          </g>
+          <text x="86"  y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">1</text>
+          <text x="146" y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">2</text>
+          <text x="206" y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">3</text>
+          <text x="266" y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">4</text>
+          <path d="M320 418 L334 426 L320 434 Z" fill="none" stroke="#e8e8e8" stroke-width="2" stroke-linejoin="round"/>
+        </g>
+
+        <!-- row 3: 5 6 7 8 write -->
+        <g>
+          <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+            <rect x="64"  y="464" width="44" height="44" rx="7"/>
+            <rect x="124" y="464" width="44" height="44" rx="7"/>
+            <rect x="184" y="464" width="44" height="44" rx="7"/>
+            <rect x="244" y="464" width="44" height="44" rx="7"/>
+            <rect x="304" y="464" width="44" height="44" rx="7"/>
+          </g>
+          <text x="86"  y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">5</text>
+          <text x="146" y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">6</text>
+          <text x="206" y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">7</text>
+          <text x="266" y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">8</text>
+          <circle cx="326" cy="486" r="8" fill="none" stroke="#e8e8e8" stroke-width="2"/>
+        </g>
+
+        <!-- callouts -->
+        <g font-size="11" fill="#ff4a00">
+          <!-- screen -->
+          <line x1="335" y1="90" x2="386" y2="90" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="94">1</text>
+          <!-- knobs a + b -->
+          <line x1="350" y1="306" x2="386" y2="306" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="310">2</text>
+          <!-- icon keys -->
+          <line x1="64" y1="306" x2="24" y2="306" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="310">3</text>
+          <!-- variant keys -->
+          <line x1="64" y1="366" x2="24" y2="366" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="370">4</text>
+          <!-- fx -->
+          <line x1="348" y1="366" x2="386" y2="366" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="370">5</text>
+          <!-- keys 1-8 -->
+          <line x1="64" y1="426" x2="24" y2="426" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="430">6</text>
+          <!-- play -->
+          <line x1="348" y1="426" x2="386" y2="426" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="430">7</text>
+          <!-- write -->
+          <line x1="348" y1="486" x2="386" y2="486" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="490">8</text>
+          <!-- power -->
+          <line x1="64" y1="252" x2="24" y2="252" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="256">9</text>
+        </g>
+      </svg>
