@@ -1,6 +1,6 @@
 # pocket video synthesizer · operator's guide
 
-**#po10diy by rmna** — a two-color video synthesizer in the pocket operator format. eight generative layers, an eight-step sequencer, momentary effects, an onboard screen and a dvi port for projectors. battery included. sound not included — that's the other pocket operators' job.
+**#po10diy by rmna** — a two-color video synthesizer in the pocket operator format. eight generative layers, an eight-step sequencer, momentary effects, an onboard screen and a dvi port for projectors.
 
 *homage to teenage engineering's pocket operator™ series · built for the #po10diy contest*
 
@@ -141,8 +141,6 @@ the middle 320×240 is the canvas — it's exactly what the dvi port sends out. 
 **warnings**
 
 - strobe-capable device — mind photosensitive viewers when projecting fx 1/2/3.
-- contains a lipo battery. don't puncture, don't barbecue.
-- not a real teenage engineering product. it just dresses like one out of love.
 
 ## 11 · in the works
 
