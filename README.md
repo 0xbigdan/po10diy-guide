@@ -35,7 +35,7 @@
 **charging:** plug a usb-c cable into the feather board on the back.
 
 ## 03 · quick start — 60 seconds
-!quick start (IMG_1542.png)
+![quick start](IMG_1542.png)
 1. slide the power switch down. the screen lights up.
 2. hold `1`. random lines fill the canvas. keep holding.
 3. twist **knob a** and **knob b**. length, count, everything moves.
