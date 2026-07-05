@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pocket video synthesizer — operator's guide</title>
+<style>
+  :root {
+    --ink: #e8e8e8;
+    --paper: #0f0f0f;
+    --gray: #1b1b1b;
+    --mid: #8a8a8a;
+    --orange: #ff4a00;
+    --hairline: 1px solid #e8e8e8;
+    color-scheme: dark;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+  .mono {
+    font-family: "SF Mono", ui-monospace, "Roboto Mono", "Courier New", monospace;
+    font-size: 0.86em;
+    letter-spacing: 0;
+  }
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 120px;
+  }
+
+  /* ---------- masthead ---------- */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 28px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--orange);
+    flex: none;
+  }
+  .brand h1 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .brand h1 span { font-weight: 400; color: var(--mid); }
+  .masthead-meta {
+    font-family: "SF Mono", ui-monospace, "Roboto Mono", monospace;
+    font-size: 11px;
+    color: var(--ink);
+    text-align: right;
+    line-height: 1.7;
+  }
+  .masthead-meta em { font-style: normal; color: var(--orange); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 56px 0 40px;
+    border-bottom: var(--hairline);
+  }
+  .hero h2 {
+    font-size: clamp(34px, 6vw, 58px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  .hero h2 .thin { font-weight: 400; }
+  .hero p.sub {
+    margin-top: 18px;
+    max-width: 560px;
+    color: var(--ink);
+  }
+  .hero .tagline {
+    margin-top: 10px;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--mid);
+  }
+
+  /* ---------- table of contents ---------- */
+  nav.toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    border-bottom: var(--hairline);
+  }
+  nav.toc a {
+    display: block;
+    padding: 14px 12px 14px 0;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 13px;
+    border-top: 1px solid #2e2e2e;
+  }
+  nav.toc a:hover { color: var(--orange); }
+  nav.toc a .n {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--orange);
+    margin-right: 10px;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 56px 0 8px; }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 26px;
+  }
+  .sec-head .num {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 13px;
+    color: var(--orange);
+  }
+  .sec-head h3 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+  p + p { margin-top: 12px; }
+  .note {
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: var(--gray);
+    font-size: 13px;
+  }
+  .note b:first-child { color: var(--orange); }
+  .caption {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--mid);
+    margin-top: 8px;
+  }
+
+  /* ---------- key glyphs ---------- */
+  .k {
+    display: inline-block;
+    min-width: 24px;
+    padding: 1px 6px 2px;
+    border: 1.5px solid var(--ink);
+    border-radius: 5px;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.5;
+    background: transparent;
+    vertical-align: baseline;
+  }
+  .k.orange { border-color: var(--orange); color: var(--orange); }
+
+  /* ---------- tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 8px;
+  }
+  th {
+    text-align: left;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--mid);
+    border-bottom: var(--hairline);
+    padding: 6px 14px 6px 0;
+    white-space: nowrap;
+  }
+  td {
+    border-bottom: 1px solid #2e2e2e;
+    padding: 10px 14px 10px 0;
+    vertical-align: top;
+  }
+  td.num {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--orange);
+    white-space: nowrap;
+  }
+  td b { font-weight: 700; }
+  tr:last-child td { border-bottom: var(--hairline); }
+
+  /* ---------- steps ---------- */
+  ol.steps { list-style: none; counter-reset: st; margin-top: 4px; }
+  ol.steps li {
+    counter-increment: st;
+    position: relative;
+    padding: 12px 0 12px 52px;
+    border-bottom: 1px solid #2e2e2e;
+  }
+  ol.steps li::before {
+    content: counter(st, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 13px;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--orange);
+  }
+
+  /* ---------- diagram ---------- */
+  .diagram-wrap {
+    background: var(--gray);
+    padding: 32px 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .legend {
+    margin-top: 0;
+  }
+  .legend td:first-child {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--orange);
+    width: 34px;
+  }
+
+  /* ---------- warning strip ---------- */
+  .warnings {
+    margin-top: 24px;
+    border: var(--hairline);
+    padding: 16px 18px;
+    font-size: 13px;
+  }
+  .warnings h4 {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .warnings ul { list-style: none; }
+  .warnings li { padding: 3px 0; }
+  .warnings li::before { content: "* "; color: var(--orange); }
+
+  /* ---------- footer ---------- */
+  footer {
+    margin-top: 80px;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--mid);
+  }
+  footer a, .textlink { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--orange); }
+  .textlink:hover { color: var(--orange); }
+  footer a:hover { color: var(--orange); }
+
+  @media print {
+    .page { max-width: none; padding: 0 8mm; }
+    nav.toc a:hover { color: var(--ink); }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ======================= masthead ======================= -->
+  <header>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <h1>pocket video synthesizer <span>/ #po10diy by rmna</span></h1>
+    </div>
+    <div class="masthead-meta">
+      operator's&nbsp;guide<br>
+      8&nbsp;layers · 8&nbsp;steps · 2&nbsp;colors
+    </div>
+  </header>
+
+  <!-- ======================= hero ======================= -->
+  <div class="hero">
+    <h2>video art<br><span class="thin">in your pocket.</span></h2>
+    <p class="sub">
+      a two-color video synthesizer in the pocket operator format. eight generative
+      layers, an eight-step sequencer, momentary effects, an onboard screen and a
+      dvi(hdmi) port for projector output.
+    </p>
+    <p class="tagline">homage to teenage engineering's pocket operator™ series · built for the #po10diy contest</p>
+  </div>
+
+  <!-- ======================= toc ======================= -->
+  <nav class="toc">
+    <a href="#s1"><span class="n">01</span>panel layout</a>
+    <a href="#s2"><span class="n">02</span>power</a>
+    <a href="#s3"><span class="n">03</span>quick start</a>
+    <a href="#s4"><span class="n">04</span>layers</a>
+    <a href="#s5"><span class="n">05</span>shaping a layer</a>
+    <a href="#s6"><span class="n">06</span>sequencer</a>
+    <a href="#s7"><span class="n">07</span>fx</a>
+    <a href="#s8"><span class="n">08</span>the screen</a>
+    <a href="#s9"><span class="n">09</span>outputs</a>
+    <a href="#s10"><span class="n">10</span>good to know</a>
+    <a href="#s11"><span class="n">11</span>in the works</a>
+    <a href="#s12"><span class="n">12</span>specifications</a>
+    <a href="#s13"><span class="n">13</span>make your own</a>
+  </nav>
+
+  <!-- ======================= 01 panel ======================= -->
+  <section id="s1">
+    <div class="sec-head"><span class="num">01</span><h3>panel layout</h3></div>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 420 620" width="420" style="max-width:100%; height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'SF Mono', ui-monospace, 'Roboto Mono', monospace" role="img" aria-label="front panel diagram of the pocket video synthesizer">
+        <!-- device body -->
+        <rect x="40" y="30" width="320" height="560" rx="10" fill="#161616" stroke="#e8e8e8" stroke-width="1.5"/>
+        <!-- mounting holes -->
+        <circle cx="56" cy="46" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+        <circle cx="344" cy="46" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+        <circle cx="56" cy="574" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+        <circle cx="344" cy="574" r="3.5" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+
+        <!-- screen -->
+        <rect x="65" y="62" width="270" height="162" fill="#000"/>
+        <rect x="68" y="65" width="264" height="156" fill="#fff"/>
+        <!-- ui strips -->
+        <rect x="68" y="65" width="26" height="156" fill="#eaeaea"/>
+        <rect x="306" y="65" width="26" height="156" fill="#eaeaea"/>
+        <!-- left strip: layer icons -->
+        <g fill="none" stroke="#111" stroke-width="1">
+          <rect x="73" y="72" width="16" height="10"/>
+          <rect x="73" y="86" width="16" height="10"/>
+          <rect x="73" y="100" width="16" height="10"/>
+          <rect x="73" y="114" width="16" height="10"/>
+          <rect x="73" y="150" width="10" height="10"/>
+          <rect x="73" y="170" width="16" height="12"/>
+          <rect x="73" y="188" width="16" height="12"/>
+        </g>
+        <!-- right strip: knob bars -->
+        <rect x="310" y="120" width="8" height="96" fill="#111"/>
+        <rect x="321" y="160" width="8" height="56" fill="#111"/>
+        <!-- canvas doodle -->
+        <g fill="none" stroke="#111" stroke-width="1">
+          <circle cx="200" cy="143" r="38"/>
+          <circle cx="200" cy="143" r="24"/>
+          <path d="M120 200 L280 86"/>
+          <path d="M132 86 L268 200"/>
+          <rect x="176" y="119" width="48" height="48"/>
+        </g>
+
+        <!-- power switch: hidden under the display's lower-left corner -->
+        <rect x="64" y="246" width="30" height="12" rx="3" fill="none" stroke="#e8e8e8" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <text x="100" y="256" font-size="9" fill="#9b9b9b">on/off (under display)</text>
+
+        <!-- keypad row 0: layers / folder / tempo keys + knobs a/b -->
+        <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+          <rect x="64"  y="284" width="44" height="44" rx="7"/>
+          <rect x="124" y="284" width="44" height="44" rx="7"/>
+          <rect x="184" y="284" width="44" height="44" rx="7"/>
+        </g>
+        <!-- layers icon -->
+        <g fill="none" stroke="#e8e8e8" stroke-width="1.5">
+          <path d="M86 298 L98 305 L86 312 L74 305 Z"/>
+          <path d="M74 310 L86 317 L98 310"/>
+        </g>
+        <!-- folder icon -->
+        <path d="M134 300 h9 l3 3 h12 v11 h-24 Z" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+        <!-- lock icon -->
+        <rect x="199" y="304" width="14" height="10" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+        <path d="M202 304 v-3 a4 4 0 0 1 8 0 v3" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+        <!-- knobs -->
+        <circle cx="266" cy="306" r="24" fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5"/>
+        <line x1="266" y1="306" x2="266" y2="285" stroke="#e8e8e8" stroke-width="1.5"/>
+        <text x="266" y="341" font-size="9" text-anchor="middle" fill="#e8e8e8">A</text>
+        <circle cx="326" cy="306" r="24" fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5"/>
+        <line x1="326" y1="306" x2="342" y2="292" stroke="#e8e8e8" stroke-width="1.5"/>
+        <text x="326" y="341" font-size="9" text-anchor="middle" fill="#e8e8e8">B</text>
+
+        <!-- button grid: 3 rows x 5 cols -->
+        <!-- row 1: ! !! !!! color fx -->
+        <g>
+          <!-- x positions: 62, 122, 182, 242, 302 centers -->
+          <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+            <rect x="64"  y="344" width="44" height="44" rx="7"/>
+            <rect x="124" y="344" width="44" height="44" rx="7"/>
+            <rect x="184" y="344" width="44" height="44" rx="7"/>
+            <rect x="244" y="344" width="44" height="44" rx="7"/>
+            <rect x="304" y="344" width="44" height="44" rx="7"/>
+          </g>
+          <text x="86"  y="371" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">!</text>
+          <text x="146" y="371" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">!!</text>
+          <text x="206" y="371" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">!!!</text>
+          <!-- color swatch icon: diagonally half-filled square -->
+          <rect x="255" y="355" width="22" height="22" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+          <path d="M255 377 L277 377 L277 355 Z" fill="#e8e8e8"/>
+          <text x="326" y="371" font-size="11" font-weight="bold" text-anchor="middle" fill="#ff4a00">FX</text>
+        </g>
+
+        <!-- row 2: 1 2 3 4 play -->
+        <g>
+          <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+            <rect x="64"  y="404" width="44" height="44" rx="7"/>
+            <rect x="124" y="404" width="44" height="44" rx="7"/>
+            <rect x="184" y="404" width="44" height="44" rx="7"/>
+            <rect x="244" y="404" width="44" height="44" rx="7"/>
+            <rect x="304" y="404" width="44" height="44" rx="7"/>
+          </g>
+          <text x="86"  y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">1</text>
+          <text x="146" y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">2</text>
+          <text x="206" y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">3</text>
+          <text x="266" y="431" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">4</text>
+          <path d="M320 418 L334 426 L320 434 Z" fill="none" stroke="#e8e8e8" stroke-width="2" stroke-linejoin="round"/>
+        </g>
+
+        <!-- row 3: 5 6 7 8 write -->
+        <g>
+          <g fill="#1c1c1c" stroke="#e8e8e8" stroke-width="1.5">
+            <rect x="64"  y="464" width="44" height="44" rx="7"/>
+            <rect x="124" y="464" width="44" height="44" rx="7"/>
+            <rect x="184" y="464" width="44" height="44" rx="7"/>
+            <rect x="244" y="464" width="44" height="44" rx="7"/>
+            <rect x="304" y="464" width="44" height="44" rx="7"/>
+          </g>
+          <text x="86"  y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">5</text>
+          <text x="146" y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">6</text>
+          <text x="206" y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">7</text>
+          <text x="266" y="491" font-size="13" font-weight="bold" text-anchor="middle" fill="#e8e8e8">8</text>
+          <circle cx="326" cy="486" r="8" fill="none" stroke="#e8e8e8" stroke-width="2"/>
+        </g>
+
+        <!-- callouts -->
+        <g font-size="11" fill="#ff4a00">
+          <!-- screen -->
+          <line x1="335" y1="90" x2="386" y2="90" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="94">1</text>
+          <!-- knobs a + b -->
+          <line x1="350" y1="306" x2="386" y2="306" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="310">2</text>
+          <!-- icon keys -->
+          <line x1="64" y1="306" x2="24" y2="306" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="310">3</text>
+          <!-- variant keys -->
+          <line x1="64" y1="366" x2="24" y2="366" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="370">4</text>
+          <!-- fx -->
+          <line x1="348" y1="366" x2="386" y2="366" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="370">5</text>
+          <!-- keys 1-8 -->
+          <line x1="64" y1="426" x2="24" y2="426" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="430">6</text>
+          <!-- play -->
+          <line x1="348" y1="426" x2="386" y2="426" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="430">7</text>
+          <!-- write -->
+          <line x1="348" y1="486" x2="386" y2="486" stroke="#ff4a00" stroke-width="1"/>
+          <text x="390" y="490">8</text>
+          <!-- power -->
+          <line x1="64" y1="252" x2="24" y2="252" stroke="#ff4a00" stroke-width="1"/>
+          <text x="12" y="256">9</text>
+        </g>
+      </svg>
+    </div>
+    <p class="caption">fig. 1 — front panel. rear side (not shown): feather rp2040 board with usb-c + dvi ports, battery, 2 × 3.5 mm sync jacks.</p>
+
+    <div class="cols" style="margin-top:26px">
+      <table class="legend">
+        <tr><td>1</td><td><b>screen</b> — 400×240 memory lcd. the middle is your canvas, the side strips are ui.</td></tr>
+        <tr><td>2</td><td><b>knobs a + b</b> — the two parameters of the selected layer. a on the left, b on the right.</td></tr>
+        <tr><td>3</td><td><b>icon keys</b> (layers, folder, lock) — reserved for future firmware: tempo, pattern folders, po sync. they do nothing yet. decorative ambition.</td></tr>
+        <tr><td>4</td><td><b>variant keys</b> <span class="k">!</span> <span class="k">!!</span> <span class="k">!!!</span> — pick one of three modes per layer. next to them: the <b>color key</b> flips black↔white.</td></tr>
+        <tr><td>5</td><td><b>fx key</b> — hold it and press <span class="k">1</span>–<span class="k">8</span> for momentary effects.</td></tr>
+      </table>
+      <table class="legend">
+        <tr><td>6</td><td><b>keys 1–8</b> — the heart of the machine. they trigger layers, place steps, and pick effects, depending on mode.</td></tr>
+        <tr><td>7</td><td><b>play</b> — starts and stops the sequencer.</td></tr>
+        <tr><td>8</td><td><b>write</b> — record mode. keys 1–8 become the 8 steps.</td></tr>
+        <tr><td>9</td><td><b>power switch</b> — a slide switch tucked under the display's lower-left corner. see section 02 for a plot twist.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= 02 power ======================= -->
+  <section id="s2">
+    <div class="sec-head"><span class="num">02</span><h3>power</h3></div>
+    <div class="cols">
+      <div>
+        <p><b>on:</b> the slide switch hides under the display's lower-left corner. slide it
+        <b>down</b>, toward you. yes, down. the switch was mounted in reverse on the pcb,
+        and now it's a feature. the onboard screen wakes immediately.</p>
+        <p style="margin-top:12px"><b>off:</b> slide it up. the machine has no state memory —
+        your sequence lives only while the power is on.</p>
+      </div>
+      <div>
+        <p><b>charging:</b> plug a usb-c cable into the feather board on the back. the
+        onboard charger tops up the 400 mah lipo battery. you can keep playing while
+        it charges.</p>
+        <div class="note"><b>note:</b> the sharp memory display and rp2040 sip power politely —
+        expect hours of video art per charge, less if the dvi port is driving a projector.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 03 quick start ======================= -->
+  <section id="s3">
+    <div class="sec-head"><span class="num">03</span><h3>quick start — 60 seconds</h3></div>
+    <ol class="steps">
+      <li>slide the power switch down. the screen lights up.</li>
+      <li>hold <span class="k">1</span>. random lines fill the canvas. keep holding.</li>
+      <li>twist <b>knob a</b> and <b>knob b</b>. length, count, everything moves.</li>
+      <li>still holding <span class="k">1</span>? tap <span class="k">!!</span> then <span class="k">!!!</span>. same layer, different personality.</li>
+      <li>tap the <b>color key</b>. black becomes white, white becomes black.</li>
+      <li>hold <span class="k orange">FX</span> and press <span class="k">7</span>. instant kaleidoscope. the mirrored pixels stay on the canvas after you let go — <span class="k orange">FX</span> + <span class="k">1</span> wipes the slate.</li>
+      <li>press <b>write</b> ●, tap a few of the keys <span class="k">1</span>–<span class="k">8</span>, press <b>write</b> again, then press <b>play</b> ▶. you made a video loop. congratulations.</li>
+    </ol>
+  </section>
+
+  <!-- ======================= 04 layers ======================= -->
+  <section id="s4">
+    <div class="sec-head"><span class="num">04</span><h3>layers</h3></div>
+    <p>
+      each of the keys <span class="k">1</span>–<span class="k">8</span> is a <b>layer</b> — a little
+      generative drawing machine. <b>hold a key</b> to punch its layer in live; release
+      to stop it. hold several at once to stack them. pressing a layer key also makes it
+      the <b>selected layer</b>, which is the one the knobs, variant keys and color key talk to.
+    </p>
+    <table style="margin-top:22px">
+      <tr><th>key</th><th>layer</th><th>knob a</th><th>knob b</th><th>! / !! / !!!</th></tr>
+      <tr>
+        <td class="num">1</td><td><b>lines</b><br>random line bursts</td>
+        <td>length &amp; direction</td><td>line count</td>
+        <td>straight / diagonal / starburst rays</td>
+      </tr>
+      <tr>
+        <td class="num">2</td><td><b>rects</b><br>mirrored rectangle pairs</td>
+        <td>max width · wipe thickness</td><td>max height · wipe speed</td>
+        <td>filled / outlined / rolling wipe</td>
+      </tr>
+      <tr>
+        <td class="num">3</td><td><b>glyphs</b><br>character stamps on a grid</td>
+        <td>glyph size</td><td>glyph count</td>
+        <td>pipes &amp; frames / symbols / letters</td>
+      </tr>
+      <tr>
+        <td class="num">4</td><td><b>doodles</b><br>a shape orbiting the center</td>
+        <td>orbit swing &amp; wobble</td><td>size &amp; travel speed</td>
+        <td>circle / square / spinning triangle</td>
+      </tr>
+      <tr>
+        <td class="num">5</td><td><b>triangles</b><br>morphing geometry</td>
+        <td>horizontal spread · radius</td><td>vertical spread · spin speed</td>
+        <td>mirrored twins / orbiting solo / orbiting solo</td>
+      </tr>
+      <tr>
+        <td class="num">6</td><td><b>grid</b><br>lattices and cells</td>
+        <td>density</td><td>window · cell size · gap rhythm</td>
+        <td>line grid / square field / filled cells</td>
+      </tr>
+      <tr>
+        <td class="num">7</td><td><b>circles</b><br>four breathing circles</td>
+        <td>radius range &amp; pulse rate</td><td>spread from center</td>
+        <td>one flavor, three ways to hold it</td>
+      </tr>
+      <tr>
+        <td class="num">8</td><td><b>dust</b><br>pixel sparkle on a grid</td>
+        <td>grid coarseness</td><td>density</td>
+        <td>one flavor</td>
+      </tr>
+    </table>
+    <p class="caption">every layer redraws each frame on top of what's already there. nothing clears the screen for you — that's what fx <span style="color:var(--ink)">1</span> and <span style="color:var(--ink)">2</span> are for. trails are the point.</p>
+  </section>
+
+  <!-- ======================= 05 shaping ======================= -->
+  <section id="s5">
+    <div class="sec-head"><span class="num">05</span><h3>shaping a layer</h3></div>
+    <div class="cols">
+      <div>
+        <p><b>knobs a + b</b> — the two vertical bars on the right of the screen show
+        their values for the selected layer. every layer remembers its own knob
+        positions, so switching layers doesn't yank your settings around. the stored
+        value only updates once you actually move a knob.</p>
+        <p><b>variants</b> <span class="k">!</span> <span class="k">!!</span> <span class="k">!!!</span> —
+        each layer has up to three modes. tap one to switch the selected layer's mode.
+        it sticks until you change it.</p>
+      </div>
+      <div>
+        <p><b>color key</b> — flips the selected layer between draw-in-black and
+        draw-in-white. the two little swatch squares in the left ui strip show which
+        way it's currently pointing.</p>
+        <div class="note"><b>tip:</b> many knob mappings are cyclical — sweeping a knob
+        slowly from end to end passes through several waves of a parameter. small
+        movements, big drama.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 06 sequencer ======================= -->
+  <section id="s6">
+    <div class="sec-head"><span class="num">06</span><h3>sequencer</h3></div>
+    <p>
+      the sequencer runs <b>8 steps</b> at a fixed <b>140 bpm</b> — one step per beat,
+      techno tempo is set as default. every step can hold any
+      combination of the 8 layers, and each placed layer stores its own snapshot of
+      knob a, knob b, variant and color <b>per step</b>.
+    </p>
+    <ol class="steps" style="margin-top:20px">
+      <li><b>select a layer</b> — tap the layer key you want to sequence (it will flash on screen while held — that's normal).</li>
+      <li><b>press write</b> ● — the record dot on screen fills in. keys <span class="k">1</span>–<span class="k">8</span> now mean <b>steps 1–8</b>, not layers.</li>
+      <li><b>tap steps</b> — each tap toggles the selected layer on/off at that step, and stamps the current knob/variant/color settings into it. the mini step-grid on screen shows where your layer lands.</li>
+      <li><b>vary it</b> — turn a knob or tap a variant, then place more steps. different steps, different flavors of the same layer.</li>
+      <li><b>press write again</b> to exit, then <b>press play</b> ▶ — the loop runs, and the step cursor ticks around the on-screen grid.</li>
+      <li><b>jam over it</b> — while the loop plays, hold layer keys to punch in live on top, or hold <span class="k orange">FX</span> + a key to mangle everything.</li>
+    </ol>
+    <div class="note"><b>note:</b> play always restarts from step 1, and stopping resets the
+    position too. tempo is fixed in the current firmware — changing it is on the to-do list,
+    along with pattern folders and po sync.</div>
+  </section>
+
+  <!-- ======================= 07 fx ======================= -->
+  <section id="s7">
+    <div class="sec-head"><span class="num">07</span><h3>fx</h3></div>
+    <p>
+      hold <span class="k orange">FX</span>, then press and hold a key <span class="k">1</span>–<span class="k">8</span>.
+      the effect applies for as long as you hold it. effects are performance gestures,
+      not settings: they never get recorded into the sequence.
+    </p>
+    <table style="margin-top:22px">
+      <tr><th>fx + key</th><th>effect</th><th>what it does</th></tr>
+      <tr><td class="num">1</td><td><b>blackout</b></td><td>fills the canvas black. a clean slate, or a strobe if you tap it.</td></tr>
+      <tr><td class="num">2</td><td><b>whiteout</b></td><td>fills the canvas white. the other strobe.</td></tr>
+      <tr><td class="num">3</td><td><b>invert</b></td><td>swaps black and white. <span class="mono">dvi out only</span></td></tr>
+      <tr><td class="num">4</td><td><b>red ink</b></td><td>everything drawn turns red. <span class="mono">dvi out only</span></td></tr>
+      <tr><td class="num">5</td><td><b>mirror →</b></td><td>the right half becomes a mirror of the left.</td></tr>
+      <tr><td class="num">6</td><td><b>mirror ↓</b></td><td>the bottom half becomes a mirror of the top.</td></tr>
+      <tr><td class="num">7</td><td><b>kaleido</b></td><td>the top-left quadrant is mirrored four ways. instant symmetry.</td></tr>
+      <tr><td class="num">8</td><td><b>red paper</b></td><td>the background turns red, the ink turns black. <span class="mono">dvi out only</span></td></tr>
+    </table>
+    <p class="caption">two quirks worth knowing. the palette effects (3, 4, 8) only show on the dvi output — the onboard screen is strictly 1-bit — and they stay latched until you release the fx key itself, not just the number key. the mirror effects (5, 6, 7) paint real pixels: their symmetry stays on the canvas after you let go, until something draws over it or you wipe with fx 1 / 2.</p>
+  </section>
+
+  <!-- ======================= 08 screen ======================= -->
+  <section id="s8">
+    <div class="sec-head"><span class="num">08</span><h3>the screen</h3></div>
+    <p>the middle 320×240 is the canvas — it's exactly what the dvi port sends out. the two 40-pixel strips on the sides are the control room:</p>
+    <div class="cols" style="margin-top:18px">
+      <table>
+        <tr><th colspan="2">left strip</th></tr>
+        <tr><td class="num">a</td><td><b>8 layer icons</b> — an icon inverts while its layer is drawing (punched in, or active on the current step).</td></tr>
+        <tr><td class="num">b</td><td><b>selection mark</b> — a small line beside the icon of the selected layer.</td></tr>
+        <tr><td class="num">c</td><td><b>color swatches</b> — which of black/white the selected layer draws with.</td></tr>
+        <tr><td class="num">d</td><td><b>tempo badge</b> — reads "techno". it means 140 bpm.</td></tr>
+        <tr><td class="num">e</td><td><b>step grid</b> — 2×4 cells. the cursor ticks around it while playing; in write mode, dots mark the steps holding your selected layer.</td></tr>
+        <tr><td class="num">f</td><td><b>play + record icons</b> — filled when active.</td></tr>
+      </table>
+      <table>
+        <tr><th colspan="2">right strip</th></tr>
+        <tr><td class="num">g</td><td><b>knob a bar</b> — stored value of knob a for the selected layer.</td></tr>
+        <tr><td class="num">h</td><td><b>knob b bar</b> — stored value of knob b for the selected layer.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= 09 outputs ======================= -->
+  <section id="s9">
+    <div class="sec-head"><span class="num">09</span><h3>outputs</h3></div>
+    <div class="cols">
+      <div>
+        <p><b>dvi video out</b> — the port on the feather board (rear). connect to any
+        dvi/hdmi display or projector; the synth outputs 640×480 @ 60 hz (the 320×240
+        canvas, pixel-doubled). the side ui strips stay on the onboard screen —
+        the audience only sees the art.</p>
+      </div>
+      <div>
+        <p><b>sync jacks</b> — two 3.5 mm jacks on the rear, wired for pocket operator
+        sync. firmware support is still to-do, so for now they are decorative ambition.
+        one day: video locked to your po-12's kick drum.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 10 good to know ======================= -->
+  <section id="s10">
+    <div class="sec-head"><span class="num">10</span><h3>good to know</h3></div>
+    <table>
+      <tr><td class="num">a</td><td><b>selecting = triggering.</b> tapping a layer key to select it also draws it for a moment. there is no silent select — treat the flash as confirmation.</td></tr>
+      <tr><td class="num">b</td><td><b>knobs write instantly.</b> moving a knob immediately updates the selected layer's live settings. park your knobs before a performance, or use it as a feature.</td></tr>
+      <tr><td class="num">c</td><td><b>steps are snapshots.</b> a step remembers the knob/variant/color values from the moment you placed it. re-tap the step twice (off, then on) to re-stamp it with new values.</td></tr>
+      <tr><td class="num">d</td><td><b>trails are free.</b> the canvas is never cleared automatically. layers accumulate into dense textures — use fx 1 / fx 2 as your eraser and rhythm section.</td></tr>
+      <tr><td class="num">e</td><td><b>no save.</b> power off and the sequence is gone, like a sand mandala. record your output if you love it.</td></tr>
+      <tr><td class="num">f</td><td><b>hackable.</b> every layer is a small arduino function, and <span class="mono">layers.ino</span> ships with a commented template. write your own layer no. 9.</td></tr>
+    </table>
+
+    <div class="warnings">
+      <h4>warnings</h4>
+      <ul>
+        <li>strobe-capable device — mind photosensitive viewers when projecting fx 1/2/3.</li>
+             </ul>
+    </div>
+  </section>
+
+  <!-- ======================= 11 in the works ======================= -->
+  <section id="s11">
+    <div class="sec-head"><span class="num">11</span><h3>in the works</h3></div>
+    <p>the firmware isn't finished — it's a living thing. from the repo's to-do list:</p>
+    <table style="margin-top:14px">
+      <tr><td class="num">a</td><td><b>po sync</b> — lock the step clock to a master pocket operator. the jacks and the input circuit are already on the board, waiting.</td></tr>
+      <tr><td class="num">b</td><td><b>tempo</b> — the classic po presets (hip hop 80 / disco 120 / techno 140) instead of a fixed 140.</td></tr>
+      <tr><td class="num">c</td><td><b>pattern folders</b> — more than one sequence, switched with the folder key.</td></tr>
+      <tr><td class="num">d</td><td><b>silent layer select</b> — pick a layer without triggering it, via the layers key.</td></tr>
+    </table>
+    <p class="caption">the three icon keys below the screen are reserved for exactly these. when the firmware catches up, so will this guide.</p>
+  </section>
+
+  <!-- ======================= 12 specs ======================= -->
+  <section id="s12">
+    <div class="sec-head"><span class="num">12</span><h3>specifications</h3></div>
+    <table>
+      <tr><td class="num">cpu</td><td>raspberry pi rp2040, dual-core (adafruit feather rp2040 dvi)</td></tr>
+      <tr><td class="num">display</td><td>2.7″ sharp memory lcd, 400×240, 1-bit</td></tr>
+      <tr><td class="num">video out</td><td>dvi, 640×480 @ 60 hz (320×240 pixel-doubled)</td></tr>
+      <tr><td class="num">colors</td><td>2 — black and white. 3 with fx, if you count red. we count red.</td></tr>
+      <tr><td class="num">engine</td><td>8 layers × 8 steps × 4 parameters (a, b, variant, color)</td></tr>
+      <tr><td class="num">tempo</td><td>140 bpm, fixed (for now)</td></tr>
+      <tr><td class="num">controls</td><td>18 keys, 2 potentiometers, 1 power switch</td></tr>
+      <tr><td class="num">sync</td><td>2 × 3.5 mm jacks, po-sync ready (firmware pending)</td></tr>
+      <tr><td class="num">power</td><td>400 mah lipo, usb-c charging</td></tr>
+      <tr><td class="num">cost</td><td>≈ $100 in parts</td></tr>
+    </table>
+  </section>
+
+  <!-- ======================= 13 make your own ======================= -->
+  <section id="s13">
+    <div class="sec-head"><span class="num">13</span><h3>make your own</h3></div>
+    <p>
+      this machine isn't for sale — it's for building. the repository contains the full
+      kicad project, exported gerbers, a bill of materials, step-by-step assembly
+      instructions, and the arduino firmware. order the pcb, melt some solder paste,
+      and send the maker a picture when yours boots.
+    </p>
+    <p style="margin-top:12px">
+      full story: <a class="textlink mono" href="https://ramona.diy/video-art/po-video">ramona.diy/video-art/po-video</a> ·
+      hardware, firmware &amp; build guide: <a class="textlink mono" href="https://github.com/ramonaisonline/po10diy">github.com/ramonaisonline/po10diy</a>
+    </p>
+  </section>
+
+  <!-- ======================= footer ======================= -->
+  <footer>
+    <div>pocket video synthesizer — designed by ramona sharples (rmna) for the #po10diy contest.</div>
+    <div>this guide was written from the firmware source. pocket operator™ is a trademark of <a href="https://teenage.engineering">teenage engineering</a>; this is an unaffiliated homage.</div>
+  </footer>
+
+</div>
+</body>
+</html>
